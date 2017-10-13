@@ -1,0 +1,26 @@
+<% wrap_layout :inner do %>
+  <% content_for :sidebar do %>
+    <div class="docs-sidebar hidden-print affix-top" role="complementary">
+      <ul class="nav docs-sidenav">
+        <li<%= sidebar_current("docs-home") %>>
+        <a href="/docs/providers/index.html">All Providers</a>
+                </li>
+
+        <li<%= sidebar_current("docs-splunk-index") %>>
+        <a href="/docs/providers/splunk/index.html">Splunk Provider</a>
+                </li>
+
+        <li<%= sidebar_current("docs-splunk-resource") %>>
+        <a href="#">Resources</a>
+                <ul class="nav nav-visible">
+                    <li<%= sidebar_current("docs-splunk-resource-saved-search") %>>
+          <a href="/docs/providers/splunk/r/saved_search.html">splunk_saved_search</a>
+          </li>
+        </ul>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= yield %>
+  <% end %>
