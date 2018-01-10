@@ -81,8 +81,14 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"action_email_max_results": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  10000,
 			},
 			"action_email_max_time": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
+			"action_email_message_alert": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -173,6 +179,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"action_populate_lookup_max_results": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  10000,
 			},
 			"action_populate_lookup_max_time": {
 				Type:     schema.TypeString,
@@ -205,6 +212,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"action_rss_max_results": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  10000,
 			},
 			"action_rss_max_time": {
 				Type:     schema.TypeString,
@@ -252,6 +260,18 @@ func resourceSplunkSavedSearch() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"action_slack": {
+				Type:     schema.TypeBool,
+				Computed: true,
+			},
+			"action_slack_channel": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
+			"action_slack_message": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"action_summary_index": {
 				Type:     schema.TypeBool,
 				Computed: true,
@@ -278,6 +298,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"action_summary_index_max_results": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  10000,
 			},
 			"action_summary_index_max_time": {
 				Type:     schema.TypeString,
@@ -300,10 +321,12 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"alert_digest_mode": {
 				Type:     schema.TypeBool,
 				Optional: true,
+				Default:  true,
 			},
 			"alert_expires": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "24h",
 			},
 			"alert_severity": {
 				Type:     schema.TypeInt,
@@ -325,6 +348,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"alert_track": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "0",
 			},
 			"alert_comparator": {
 				Type:     schema.TypeString,
@@ -341,6 +365,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"alert_type": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "number of events",
 			},
 			"auto_summarize": {
 				Type:     schema.TypeBool,
@@ -456,6 +481,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"dispatch_max_count": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  500000,
 			},
 			"displayview": {
 				Type:     schema.TypeString,
@@ -483,10 +509,12 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"request_ui_dispatch_app": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "search",
 			},
 			"request_ui_dispatch_view": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "search",
 			},
 			"restart_on_searchpeer_add": {
 				Type:     schema.TypeBool,
@@ -557,6 +585,7 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	d.Set("action_email_mailserver", savedSearch.ActionEmailMailserver)
 	d.Set("action_email_max_results", savedSearch.ActionEmailMaxResults)
 	d.Set("action_email_max_time", savedSearch.ActionEmailMaxTime)
+	d.Set("action_email_message_alert", savedSearch.ActionEmailMessageAlert)
 	d.Set("action_email_pdfview", savedSearch.ActionEmailPDFView)
 	d.Set("action_email_preprocess_results", savedSearch.ActionEmailPreprocessResults)
 	d.Set("action_email_report_cid_font_list", savedSearch.ActionEmailReportCIDFontList)
@@ -587,6 +616,9 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	d.Set("action_rss_max_time", savedSearch.ActionRSSMaxTime)
 	d.Set("action_rss_track_alert", savedSearch.ActionRSSTrackAlert)
 	d.Set("action_rss_ttl", savedSearch.ActionRSSTTL)
+	d.Set("action_slack", savedSearch.ActionSlack)
+	d.Set("action_slack_channel", savedSearch.ActionSlackChannel)
+	d.Set("action_slack_message", savedSearch.ActionSlackMessage)
 	d.Set("action_script", savedSearch.ActionScript)
 	d.Set("action_script_command", savedSearch.ActionScriptCommand)
 	d.Set("action_script_filename", savedSearch.ActionScriptFilename)
@@ -694,6 +726,7 @@ func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
 		ActionEmailMailserver:              d.Get("action_email_mailserver").(string),
 		ActionEmailMaxResults:              d.Get("action_email_max_results").(int),
 		ActionEmailMaxTime:                 d.Get("action_email_max_time").(string),
+		ActionEmailMessageAlert:            d.Get("action_email_message_alert").(string),
 		ActionEmailPDFView:                 d.Get("action_email_pdfview").(string),
 		ActionEmailPreprocessResults:       d.Get("action_email_preprocess_results").(string),
 		ActionEmailReportCIDFontList:       d.Get("action_email_report_cid_font_list").(string),
@@ -732,6 +765,9 @@ func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
 		ActionScriptMaxTime:                d.Get("action_script_max_time").(string),
 		ActionScriptTrackAlert:             d.Get("action_script_track_alert").(bool),
 		ActionScriptTTL:                    d.Get("action_script_ttl").(string),
+		ActionSlack:                        d.Get("action_slack").(bool),
+		ActionSlackChannel:                 d.Get("action_slack_channel").(string),
+		ActionSlackMessage:                 d.Get("action_slack_message").(string),
 		ActionSummaryIndexCommand:          d.Get("action_summary_index_command").(string),
 		ActionSummaryIndexHostname:         d.Get("action_summary_index_hostname").(string),
 		ActionSummaryIndexInline:           d.Get("action_summary_index_inline").(bool),
