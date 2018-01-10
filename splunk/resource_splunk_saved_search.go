@@ -356,6 +356,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"alert_comparator": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "greater than",
 			},
 			"alert_condition": {
 				Type:     schema.TypeString,
@@ -364,6 +365,7 @@ func resourceSplunkSavedSearch() *schema.Resource {
 			"alert_threshold": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Default:  "0",
 			},
 			"alert_type": {
 				Type:     schema.TypeString,
