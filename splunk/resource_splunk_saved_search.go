@@ -14,6 +14,9 @@ func resourceSplunkSavedSearch() *schema.Resource {
 		Read:   resourceSplunkSavedSearchRead,
 		Update: resourceSplunkSavedSearchUpdate,
 		Delete: resourceSplunkSavedSearchDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"name": {
