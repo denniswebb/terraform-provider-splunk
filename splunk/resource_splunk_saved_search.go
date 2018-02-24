@@ -55,16 +55,16 @@ func resourceSplunkSavedSearch() *schema.Resource {
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 							},
-							Optional:true,
-							Computed:true,
+							Optional: true,
+							Computed: true,
 						},
 						"write": {
 							Type: schema.TypeList,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 							},
-							Optional:true,
-							Computed:true,
+							Optional: true,
+							Computed: true,
 						},
 					},
 				},
@@ -658,7 +658,7 @@ func resourceSplunkSavedSearchCreate(d *schema.ResourceData, meta interface{}) e
 
 	log.Printf("[INFO] Splunk Saved Search ID: %s", d.Id())
 
-	resourceSplunkSavedSearchAclUpdate(c,s)
+	resourceSplunkSavedSearchAclUpdate(c, s)
 
 	return resourceSplunkSavedSearchRead(d, meta)
 }
@@ -804,7 +804,7 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	return nil
 }
 
-func flattenAcl(a *splunk.ACL)[]interface{}{
+func flattenAcl(a *splunk.ACL) []interface{} {
 	m := make(map[string]interface{})
 
 	m["app"] = a.App
@@ -826,14 +826,14 @@ func resourceSplunkSavedSearchUpdate(d *schema.ResourceData, meta interface{}) e
 		return fmt.Errorf("Failed to update Splunk Saved Search: %s", err)
 	}
 
-	resourceSplunkSavedSearchAclUpdate(c,s)
+	resourceSplunkSavedSearchAclUpdate(c, s)
 
 	return resourceSplunkSavedSearchRead(d, meta)
 }
 
 func resourceSplunkSavedSearchAclUpdate(c *splunk.Client, s *splunk.SavedSearch) error {
 	log.Printf("[DEBUG] Splunk Saved Search ACL update configuration: %#v", s.ACL)
-	_, err := 	c.SavedSearchACLUpdate(&s.ACL, s.Name)
+	_, err := c.SavedSearchACLUpdate(&s.ACL, s.Name)
 
 	if err != nil {
 		return fmt.Errorf("Failed to update Splunk Saved Search ACL: %s", err)
@@ -857,7 +857,7 @@ func resourceSplunkSavedSearchDelete(d *schema.ResourceData, meta interface{}) e
 
 func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
 	savedSearch := &splunk.SavedSearch{
-		Name:                               d.Get("name").(string),
+		Name: d.Get("name").(string),
 		Configuration: splunk.SavedSearchConfiguration{
 			ActionEmailAuthPassword:            d.Get("action_email_auth_password").(string),
 			ActionEmailAuthUsername:            d.Get("action_email_auth_username").(string),
@@ -978,8 +978,8 @@ func savedSearchFromResourceData(d *schema.ResourceData) *splunk.SavedSearch {
 		m := a[0].(map[string]interface{})
 
 		savedSearch.ACL = splunk.ACL{
-			App: m["app"].(string),
-			Owner: m["owner"].(string),
+			App:     m["app"].(string),
+			Owner:   m["owner"].(string),
 			Sharing: m["sharing"].(string),
 		}
 
