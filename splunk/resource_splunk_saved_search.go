@@ -682,7 +682,7 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	d.Set("dispatch_max_count", savedSearch.Configuration.DispatchMaxCount)
 	d.Set("is_scheduled", savedSearch.Configuration.IsScheduled)
 	d.Set("is_visible", savedSearch.Configuration.IsVisible)
-	d.Set("action_emal", savedSearch.Configuration.ActionEmail)
+	d.Set("action_email", savedSearch.Configuration.ActionEmail)
 	d.Set("action_email_auth_username", savedSearch.Configuration.ActionEmailAuthUsername)
 	d.Set("action_email_auth_password", savedSearch.Configuration.ActionEmailAuthPassword)
 	d.Set("action_email_bcc", savedSearch.Configuration.ActionEmailBCC)
