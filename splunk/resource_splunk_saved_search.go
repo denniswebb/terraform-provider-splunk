@@ -3,6 +3,7 @@ package splunk
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/denniswebb/go-splunk/splunk"
 	"github.com/hashicorp/terraform/helper/schema"
@@ -667,6 +668,11 @@ func resourceSplunkSavedSearchRead(d *schema.ResourceData, meta interface{}) err
 	client := meta.(*splunk.Client)
 	savedSearch, err := client.SavedSearchRead(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			log.Printf("[WARN] Removing resource from state because it's not found in API")
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 
