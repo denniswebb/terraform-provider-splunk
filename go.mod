@@ -1,4 +1,4 @@
-module github.com/sheax0r/terraform-provider-splunk
+module github.com/denniswebb/terraform-provider-splunk
 
 require (
 	github.com/denniswebb/go-splunk v0.0.0-20180501164408-314ac98ea67d
